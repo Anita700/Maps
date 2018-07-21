@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>This is Anitas web mapping application</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+  </head>
+
+  <body>
+    <div id="mapid" style="width: 600px; height: 400px;"></div>
+    <script>
+
+    // initialize map in div id="mapid" element
+    var mymap = L.map('mapid');
+
+    // set the center of our map, zoom level
+    mymap.setView([12.04449,-61.74930], 12);
+
+    // url template for our map provider
+    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    // attribution that appears in right bottom corner of the map
+    var osmAttrib='Map data <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+
+    // create a tilelayer object for specific map data provider
+    var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 16, attribution: osmAttrib});
+
+    // add layer with tiles from specific map data provider
+    mymap.addLayer(osm);
+
+    // Define spatial data in GeoJSON format
+    var places_geojson={
+    "type": "FeatureCollection",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+
+    "features": [
+    { "type": "Feature", "properties": { name: "marker1"}, "geometry": { "type": "Point", "coordinates": [-61.75930,12.04449] } },
+    { "type": "Feature", "properties": { name: "marker2"}, "geometry": { "type": "Point", "coordinates": [-61.76930,12.04448] } },
+    { "type": "Feature", "properties": { name: "marker3"}, "geometry": { "type": "Point", "coordinates": [-61.77930,12.04447] } },
+    { "type": "Feature", "properties": { name: "MPA"},     "geometry": { "type": "Polygon", "coordinates":
+                                                                                          [[
+                                                                                          [-61.75,12.044],
+                                                                                          [-61.74,12.047],
+                                                                                          [-61.744,12.041],
+                                                                                          [-61.75,12.044]
+                                                                                          ]]
+
+
+    }}]}
+
+    // Adding GeoJSON layer with our data to the map
+    L.geoJSON(places_geojson,
+     {
+      // Creating marker for each feature
+      pointToLayer: function (feature, latlng) {
+        // Creating marker for each feature
+        var m = L.marker(latlng);
+        // Creating a popup for each feature
+        // with "name" property
+        m.bindPopup(feature.properties.name);
+        return m;
+     }
+    }).addTo(mymap);
+    </script>
+  </body>
+</html>
