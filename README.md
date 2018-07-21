@@ -1,1 +1,1 @@
-https://anita700.github.io/Maps/.
+https://anita700.github.io/Maps/testmap.
